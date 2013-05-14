@@ -36,6 +36,9 @@ DATABASES = {
     },
 }
 
+# ===========
+# = MongoDB =
+# ===========
 MONGO_DB = {
     'name': 'gotvrecommendation',
     'host': '127.0.0.1',
@@ -46,9 +49,19 @@ MONGO_DB = {
 BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = BROKER_URL
 
+# =========
+# = Redis =
+# =========
+
 REDIS = {
     'host': '127.0.0.1',
 }
+
+# ==========
+# = Celery =
+# ==========
+
+
 
 # ===========
 # = Logging =
