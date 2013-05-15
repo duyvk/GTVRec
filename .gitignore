@@ -1,9 +1,0 @@
-*.log
-*.pot
-*.pyc
-local_settings.py
-.project
-.pydevproject
-/logs
-.gitignore
-*~
