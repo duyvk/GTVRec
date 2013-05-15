@@ -1,11 +1,30 @@
 <html>
 <head>
-  <title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{% block title %}HOMEPAGE{% endblock title %}</title>
+<!--
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'scripts/jquery-2.0.0.min.js' %}"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}scripts/jquery-2.0.0.min.js"></script>
+-->
+<script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery-2.0.0.min.js"></script>
 
+
+<style type="text/css">
+	* { margin: 0; padding: 0; font-family: Arial, Verdana, Tahoma; font-size: 12px; }
+	a { text-decoration: none; }
+	ul { list-style: none; }
+</style>
+{% block css %}
+
+{% endblock %} 
+{% block scripts %}
+
+{% endblock %}
 </head>
 <body>
-{% block content %}
-
-{% endblock content %}
+	<div id='header'>{% block header %}{% endblock %}</div>
+	<div id='content'>{% block content %}{% endblock %}</div>
+	<div id='footer'>{% block footer %}{% endblock %}</div>
 </body>
 </html>
