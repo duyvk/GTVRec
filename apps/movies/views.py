@@ -5,8 +5,10 @@ Created on May 14, 2013
 '''
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from apps.movies.forms import MovieWeightsForm
 
 def index(request):
-    data = { }
-    data['f'] =  range(100)
-    return render_to_response("movies/index.html", data ,context_instance=RequestContext(request))
+    return render_to_response("movies/index.html", {
+        'f' : range(20),
+        'form' : MovieWeightsForm(),
+    } ,context_instance=RequestContext(request))

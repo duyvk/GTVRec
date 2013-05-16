@@ -99,6 +99,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'apps.userinfo.middleware.TimingMiddleware',
     'apps.userinfo.middleware.LastSeenMiddleware',
@@ -188,11 +189,11 @@ LOGGING = {
 ROOT_URLCONF            = 'urls'
 INTERNAL_IPS            = ('127.0.0.1',)
 APPEND_SLASH            = False
-SESSION_ENGINE          = "django.contrib.sessions.backends.db"
+#SESSION_ENGINE          = "django.contrib.sessions.backends.db"
 TEST_RUNNER             = "utils.testrunner.TestRunner"
-SESSION_COOKIE_NAME     = 'gtvr_sessionid'
-SESSION_COOKIE_AGE      = 60*60*24*365*2 # 2 years
-SESSION_COOKIE_DOMAIN   = '.go.vn'
+#SESSION_COOKIE_NAME     = 'gtvr_sessionid'
+#SESSION_COOKIE_AGE      = 60*60*24*365*2 # 2 years
+#SESSION_COOKIE_DOMAIN   = '.go.vn'
 
 # ==============
 # = Subdomains =
@@ -216,9 +217,11 @@ LOG_TO_STREAM = False
 # ===============
 
 INSTALLED_APPS = (
+    'django.contrib.staticfiles',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.admin',
     'django_extensions',
@@ -322,7 +325,7 @@ def custom_show_toolbar(request):
     return DEBUG
 
 DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': True,
+    'INTERCEPT_REDIRECTS': False,
     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
     'HIDE_DJANGO_SQL': False,
     'TAG':'div',

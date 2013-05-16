@@ -1,1 +1,13 @@
 <h1>WEIGHTS</h1>
+<div id='weights'>
+	<form action="{% url 'movies:index' %}" method="POSTS">{% csrf_token %}
+	{% if form != None %}
+	<ul>
+		{% for f in form %}
+		<li><span>{{ f.label }}:</span>{{ f }}<span>{{ f.errors }}</span></li>	
+		{% endfor %}
+	</ul>
+	{% endif %} 
+	</form>
+	<div style='clear: both; '></div>
+</div>
