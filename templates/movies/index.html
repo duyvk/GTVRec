@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}goTV RECOMMENDATION SYSTEM{% endblock title %}
+{% block css %}
+<style type="text/css">
+	.weight-container { height: auto; background-color: #f1f1f1; }
+	.main-content { height: auto; background-color: #5DB2FF; border-top: 1px solid transparent; color: #fff; }
+	.movie-item { text-align: center; width: 200px; padding: 5px; float: left; border: 1px solid #f00; position: relative; }
+	.movie-item .director, .movie-item .casts, .movie-item .release { text-align: justify; }
+	.others { height: 302px; position: relative; margin-bottom: 20px; margin-left: 220px; }
+	.others .movie-item { margin: 0 0 0 5px;}
+	#weights { margin: 10px; }
+	#weights ul li { display: block; float: left; margin: 0 50px 0 0; width: 130px; height: 30px; line-height: 30px; }
+	#weights ul li input, #weights ul li span:last-child { float: right; }
+	#weights ul li input { width: 50px; height: 20px; border-radius: 0; margin-top: 5px; }
+</style>
+{% endblock css %}
+{% block scripts %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("div.others").smoothDivScroll({
+			mousewheelScrolling: "allDirections",
+			manualContinuousScrolling: true,
+			autoScrollingMode: ""
+		});
+	});
+</script>
+{% endblock %}
+{% block content %}
+<div class='weight-container'>{% include 'movies/weight.html'%}</div>
+
+<div class='main-content' style='clear: both;'>
+	<div>
+		<div class='movie-item'>
+		<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
+		<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
+		<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
+		<div class='casts'>
+			<div>Casts:</div>
+			<ul>
+				<li><a href="#">Lily Collins</a></li>
+				<li><a href="#">Julia Roberts</a></li>
+				<li><a href="#">Armie Hammer</a></li>
+			</ul>
+		</div>
+		<div class='release'><span>Release: </span><span>2012</span></div>
+		</div>
+		<div class='others'>
+		{% for i in f %}
+			<div class='movie-item'>
+				<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
+				<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
+				<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
+				<div class='casts'>
+					<div>Casts:</div>
+					<ul>
+						<li><a href="#">Lily Collins</a></li>
+						<li><a href="#">Julia Roberts</a></li>
+						<li><a href="#">Armie Hammer</a></li>
+					</ul>
+				</div>
+				<div class='release'><span>Release: </span><span>2012</span></div>
+			</div> 
+		{% endfor %}
+		</div>
+	</div>
+	<div style='clear:both;'>
+		<div class='movie-item'>
+			<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
+			<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
+			<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
+			<div class='casts'>
+				<div>Casts:</div>
+				<ul>
+					<li><a href="#">Lily Collins</a></li>
+					<li><a href="#">Julia Roberts</a></li>
+					<li><a href="#">Armie Hammer</a></li>
+				</ul>
+			</div>
+			<div class='release'><span>Release: </span><span>2012</span></div>
+		</div>
+		<div class='others'>
+		{% for i in f %}
+			<div class='movie-item'>
+				<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
+				<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
+				<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
+				<div class='casts'>
+					<div>Casts:</div>
+					<ul>
+						<li><a href="#">Lily Collins</a></li>
+						<li><a href="#">Julia Roberts</a></li>
+						<li><a href="#">Armie Hammer</a></li>
+					</ul>
+				</div>
+				<div class='release'><span>Release: </span><span>2012</span></div>
+			</div> 
+		{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock content %}
