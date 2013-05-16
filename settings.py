@@ -149,22 +149,22 @@ MONGO_DB = {
 
 class MasterSlaveRouter(object):
     """A router that sets up a simple master/slave configuration"""
-    
+
     def db_for_read(self, model, **hints):
         "Point all read operations to a random slave"
         return 'slave'
-    
+
     def db_for_write(self, model, **hints):
         "Point all write operations to the master"
         return 'default'
-    
+
     def allow_relation(self, obj1, obj2, **hints):
         "Allow any relation between two objects in the db pool"
         db_list = ('slave','default')
         if obj1._state.db in db_list and obj2._state.db in db_list:
             return True
         return None
-    
+
     def allow_syncdb(self, db, model):
         "Explicitly put all models on all databases."
         return True
@@ -175,7 +175,27 @@ class MasterSlaveRouter(object):
 
 from local_settings import *
 
-TEMPLATE_DEBUG          = DEBUG
+
+COMPRESS = not DEBUG
+TEMPLATE_DEBUG = DEBUG
+
+def custom_show_toolbar(request):
+    return DEBUG
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': True,
+    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+    'HIDE_DJANGO_SQL': False,
+    'TAG':'div',
+}
+
+# =========
+# = Redis =
+# =========
+
+BROKER_BACKEND = "redis"
+BROKER_URL = "redis://%s:6379/4" % REDIS['host']
+CELERY_RESULT_BACKEND = BROKER_URL
 
 # =========
 # = Mongo =
