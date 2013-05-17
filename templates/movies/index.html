@@ -3,13 +3,13 @@
 {% block css %}
 <style type="text/css">
 	.weight-container { height: auto; background-color: #f1f1f1; }
-	.main-content { height: auto; background-color: #5DB2FF; border-top: 1px solid transparent; color: #fff; }
-	.movie-item { text-align: center; width: 200px; padding: 5px; float: left; border: 1px solid #f00; position: relative; }
+	.main-content { height: auto; background-color: #f1f1f1; border-top: 1px solid transparent; color: #1d1d1d; }
+	.movie-item { text-align: center; width: 200px; padding: 5px; float: left; position: relative; }
 	.movie-item .director, .movie-item .casts, .movie-item .release { text-align: justify; }
-	.others { height: 302px; position: relative; margin-bottom: 20px; margin-left: 220px; }
-	.others .movie-item { margin: 0 0 0 5px;}
-	#weights { margin: 10px; }
-	#weights ul li { display: block; float: left; margin: 0 50px 0 0; width: 130px; height: 30px; line-height: 30px; }
+	.others { height: auto; position: relative; margin-bottom: 20px; margin-left: 220px; }
+	.others .movie-item { margin: 0 0 0 5px; padding: 5px;}
+	#weights { margin: 20px 5px; }
+	#weights ul li { display: block; float: left; margin: 0 30px 0 0; width: 130px; height: 30px; line-height: 30px; }
 	#weights ul li input, #weights ul li span:last-child { float: right; }
 	#weights ul li input { width: 50px; height: 20px; border-radius: 0; margin-top: 5px; }
 </style>
@@ -22,6 +22,9 @@
 			manualContinuousScrolling: true,
 			autoScrollingMode: ""
 		});
+		$(".others").each(function(k, v) {
+			$(v).height($(v).prev().height() + 10);
+		});
 	});
 </script>
 {% endblock %}
@@ -31,7 +34,7 @@
 <div class='main-content' style='clear: both;'>
 	<div>
 		<div class='movie-item'>
-		<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
+		<div class='name'><span>Mirror Mirror - Gương Thần [2012]</span></div>
 		<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
 		<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
 		<div class='casts'>
