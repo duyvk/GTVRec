@@ -8,22 +8,24 @@ goTV RECOMMENDATION SYSTEM - SIGN IN
 		$("#myModal").modal({
 			backdrop: true,
 		});
+		var top = - ($("#myModal").height() / 2);
+		$("#myModal").css('margin-top', top + 'px');
 	});
 </script>
 {% endblock %}
 {% block content %}
 
 <form action="{% url 'auth:signin' %}" method="POST">{% csrf_token %}
-	<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="myModal" style='width: 350px; margin-left: -175px; top: 50%;' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="myModalLabel">ĐĂNG NHẬP</h3>
 		</div>
 		<div class="modal-body">
-			<div><span>Tên đăng nhập:</span><input type="text" name='uname' /></div>
-			<div><span>Mật khẩu: </span><input type="password" name='upass' /></div>
+			<div><span style='float: left;'>Tên đăng nhập:</span><input type="text" name='uname' style='float: right;' /></div>
+			<div style='clear: both;'><span style='float: left;'>Mật khẩu: </span><input type="password" name='upass' style='float: right;' /></div>
 			<input type="submit" value="ĐĂNG NHẬP" class="btn btn-primary" style="display: none" />
-			<div><input type="checkbox" name='remember_me' checked="checked"><span>DUY TRÌ TRẠNG THÁI ĐĂNG NHẬP</span></div>
+			<div style='clear: both;'><input type="checkbox" name='remember_me' checked="checked"><span>DUY TRÌ TRẠNG THÁI ĐĂNG NHẬP</span></div>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

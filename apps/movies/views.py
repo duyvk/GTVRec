@@ -12,3 +12,5 @@ def index(request):
         'f' : range(20),
         'form' : MovieWeightsForm(),
     } ,context_instance=RequestContext(request))
+def view(request, page):
+    return render_to_response("movies/view.html", {}, context_instance=RequestContext());
