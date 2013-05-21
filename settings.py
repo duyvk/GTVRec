@@ -101,12 +101,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'apps.userinfo.middleware.TimingMiddleware',
-    'apps.userinfo.middleware.LastSeenMiddleware',
-    'apps.userinfo.middleware.SQLLogToConsoleMiddleware',
+    #'apps.userinfo.middleware.TimingMiddleware',
+    #'apps.userinfo.middleware.LastSeenMiddleware',
+    #'apps.userinfo.middleware.SQLLogToConsoleMiddleware',
     'subdomains.middleware.SubdomainMiddleware',
-    'apps.userinfo.middleware.SimpsonsMiddleware',
-    'apps.userinfo.middleware.ServerHostnameMiddleware',
+    #'apps.userinfo.middleware.SimpsonsMiddleware',
+    #'apps.userinfo.middleware.ServerHostnameMiddleware',
     # TODO: should be only in development mode
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
@@ -189,11 +189,11 @@ LOGGING = {
 ROOT_URLCONF            = 'urls'
 INTERNAL_IPS            = ('127.0.0.1',)
 APPEND_SLASH            = False
-#SESSION_ENGINE          = "django.contrib.sessions.backends.db"
+SESSION_ENGINE          = "django.contrib.sessions.backends.db"
 TEST_RUNNER             = "utils.testrunner.TestRunner"
-#SESSION_COOKIE_NAME     = 'gtvr_sessionid'
-#SESSION_COOKIE_AGE      = 60*60*24*365*2 # 2 years
-#SESSION_COOKIE_DOMAIN   = '.go.vn'
+SESSION_COOKIE_NAME     = 'gtvr_sessionid'
+SESSION_COOKIE_AGE      = 60*60*24*365*2 # 2 years
+SESSION_COOKIE_DOMAIN   = '.go.vn'
 
 # ==============
 # = Subdomains =
