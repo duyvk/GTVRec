@@ -229,7 +229,6 @@ INSTALLED_APPS = (
     'apps.userinfo',
     'apps.recommendations',
     'apps.statistics',
-    'south',
     'utils',
     'vendor',
 )
@@ -316,7 +315,10 @@ try:
 except ImportError, e:
     pass
 
-from local_settings import *
+try:
+    from local_settings import *
+except ImportError:
+    pass
 
 COMPRESS = not DEBUG
 TEMPLATE_DEBUG = DEBUG
