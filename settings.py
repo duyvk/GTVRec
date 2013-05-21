@@ -229,6 +229,7 @@ INSTALLED_APPS = (
     'apps.userinfo',
     'apps.recommendations',
     'apps.statistics',
+    'south',
     'utils',
     'vendor',
 )
@@ -247,6 +248,7 @@ else:
 # ==========
 
 # TODO: celery configuration HERE
+
 
 # =========
 # = Mongo =
@@ -315,10 +317,7 @@ try:
 except ImportError, e:
     pass
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
+from local_settings import *
 
 COMPRESS = not DEBUG
 TEMPLATE_DEBUG = DEBUG
