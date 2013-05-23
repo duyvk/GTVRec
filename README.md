@@ -5,3 +5,8 @@ update requirement.txt
  khong can phai cai` lan luot nua
 	: pip install -r requirements.txt
 
+django-bootstrap-pagination
+--- http://tgdn.github.io/django-bootstrap-pagination/
+django-grappelli
+--- https://github.com/sehmaschine/django-grappelli
+--- http://grappelliproject.com/
