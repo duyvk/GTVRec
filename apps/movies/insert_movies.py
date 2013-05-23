@@ -36,7 +36,7 @@ def get_or_create_movie( movieID, sourcetype):
 
 
 def get_or_create_region(id,name):
-    region = Region.objects.filter(region_id=id,region_name=name)
+    region = Region.objects.filter(region_id=id)
     if not region:
         region = Region.objects.create(region_id=id,region_name=name)
         return region
@@ -129,20 +129,19 @@ def insert_one_movie_row(movie_dict):
             else:
                 movie.is_free = False
             #movie.save()
-            
-            
+       
         if "ReleaseDate" in movie_dict:
             movie.release_date = datetime.strptime(str(movie_dict["ReleaseDate"]).split(" ")[0], "%Y-%m-%d")
             #movie.save()
             
         if "ReleaseYear" in movie_dict:
             movie.release_year = int (str(movie_dict["ReleaseYear"]).strip())
-
+        if "MovieTypeName" in movie_dict:
+            movie.movie_type = str(movie_dict['MovieTypeName']).strip()
+        
         if "ImageUrl" in movie_dict:
             movie.image_url =  str(movie_dict["ImageUrl"]).strip()
 
-        if "MovieTypeName" in movie_dict:
-            movie.movie_type = str(movie_dict['MovieTypeName']).strip()
         
         if "MovieTypeId" in movie_dict:
             mtype = int(str(movie_dict["MovieTypeId"]).strip())
@@ -155,9 +154,8 @@ def insert_one_movie_row(movie_dict):
             movie.view_count = int(str(movie_dict["ViewCount"]).strip())
 
         movie.save()
-    except:
-        pass
-
+    except Exception as e:
+        raise RuntimeError(e)
 
 def import_movie():
 
@@ -166,7 +164,7 @@ def import_movie():
     cursor_ms = conn_ms.cursor()
 
     # Lists the tables in demo
-    myGetQuery_movie = "select  * from view_ListMovies"
+    myGetQuery_movie = "select  * from view_ListMovies "
 
 
         # Execute the SQL query and get the response
@@ -176,12 +174,17 @@ def import_movie():
     list_colums = []
     for row in cursor_ms.columns(table='view_ListMovies'):
         list_colums.append(str(row.column_name))
-    print '"\n"'.join(list_colums)
+    #print ','.join(list_colums)
 
     # Loop through the response and print table names
-    for row in response:
+    for index, row in enumerate(response):
         
         movie_dict = dict(zip(list_colums,row))
+        #movie_dict = dict ((value,row[x]) for x,value in enumerate(list_colums))
+#        for key in movie_dict:
+#            print key
+#            print movie_dict[key]
+#            print "###############"
     #    dicta = dict((list_colums[key],str(value))for key, value in enumerate(row))
     #        print list_colums[key]
     #        print str(value)
@@ -190,10 +193,9 @@ def import_movie():
 #        print movie_dict["Id"]
 #        print movie_dict["SourceType"]
 #        print movie_dict
-#        insert_one_movie_row(movie_dict)
-#        movie = get_or_create_movie(83 , 1)
-#        print "---"
-#        print movie
+        print index
+        #print "\n".join(unicode(x) for x in row)
+        insert_one_movie_row(movie_dict)
 #        print "cate: %s"% movie.cate
 #        print "subcate:"
 #        print movie.subcates_name

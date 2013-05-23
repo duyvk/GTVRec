@@ -111,12 +111,12 @@ class Movie(models.Model):
     movie_id = models.IntegerField(db_index=True)
     source_type = models.IntegerField(db_index=True)
 
-    movie_name = models.CharField(max_length=100, blank=True, null=True)
+    movie_name = models.CharField(max_length=200, blank=True, null=True)
 
     cate = models.IntegerField(null=True)
 
     subcates = models.ManyToManyField(Genre, blank=True, null=True)
-    subcates_name = models.CharField(max_length=100, blank=True, null=True)
+    subcates_name = models.CharField(max_length=200, blank=True, null=True)
     #manufacturers = models.ManyToManyField(Manufacturer, blank=True, null=True)
 
 
