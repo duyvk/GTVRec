@@ -33,3 +33,4 @@ stylesheets:
         - static/bootstrap/css/bootstrap.min.css
         - static/bootstrap/css/bootstrap-responsive.min.css
         - static/css/smooth-div-scroll.css
+        - static/css/base.css

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}
+ARTIST SEARCH - goTV RECOMMENDATION SYSTEM
+{% endblock %} 
+{% block css %}
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block content %}
+<h1>ARTIST SEARCH</h1>
+<div>
+	<div><span>Artist Name: </span><span>{{ artist.artist_name }}</span></div>
+	<div><span>Artist Job: </span><span>{{ artist.artist_job }}</span></div>
+</div>
+<div class="others">
+	{% for movie in movies %}
+		<div class='movie-item'>
+			<div class='name'><a href="http://tv.go.vn/movies/details/{{ movie.movie_id }}/{{ movie.movie_name }}.htm">{{ movie.movie_name }}</a></div>
+			<img class='poster' src='http://photoservice.tv.go.vn/photo/{{ movie.image_url }}.135.192.cache' alt='Mirror' />
+			<div class='director'>
+				<div>Director: </div>
+				<ul>
+				{% for director in movie.directors.all  %}
+					<li><a href="{% url 'artist:movie' director.id %}">{{ director.artist_name }}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+			<div class='casts'>
+				<div>Casts:</div>
+				<ul>
+				{% for cast in movie.casts.all  %}
+					<li><a href="{% url 'artist:movie' cast.id %}">{{ cast.artist_name }}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+			<div class='release'><span>Release: </span><span>{{ movie.release_date|date:"m/d/Y" }}</span></div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

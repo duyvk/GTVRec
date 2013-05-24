@@ -4,19 +4,14 @@
 <style type="text/css">
 	.weight-container { height: auto; background-color: #f1f1f1; }
 	.main-content { height: auto; border-top: 1px solid transparent; color: #1d1d1d; }
-	.movie-item { text-align: center; width: 200px; padding: 5px; position: relative;  }
-	.movie-item .director, .movie-item .casts, .movie-item .release { text-align: justify; }
-	.others { height: auto; position: relative; }
-	.others .movie-item { margin: 0 0 0 5px; padding: 5px; float: left;}
 	#weights { margin: 20px 5px; }
 	#weights ul li { display: block; float: left; margin: 0 30px 0 0; width: 130px; height: 30px; line-height: 30px; }
 	#weights ul li input, #weights ul li span:last-child { float: right; }
 	#weights ul li input { width: 50px; height: 20px; border-radius: 0; margin-top: 5px; }
 	.table { margin: 0 auto; width: 1200px; }
-	table, tr, td { display: block;}
-	td { float: left; }
-	.td1 { width: 220px; }
-	.td2 { width: 945px; }
+	td { display: block; float: left; }
+	.td1 { width: 320px; }
+	.td2 { width: 845px; }
 	.pagination { margin: 5px; text-align: center;}
 </style>
 {% endblock css %}
@@ -29,7 +24,9 @@
 			manualContinuousScrolling: true,
 			autoScrollingMode: ""
 		});
+		//$(".td1").height($(".td2").height());
 		$(".td1").each(function(k, v) {
+			//$(this).height($(this).parent().height());
 			//$(this).next().width($("table").width() - $(this).width() - 34);
 			//$(v).height($(v).prev().height() + 10);
 			//$(v).css('margin-left', $(v).prev().width() + 'px');
@@ -41,7 +38,7 @@
 {% block content %}
 <div class='weight-container'>{% include 'movies/weight.html'%}</div>
 {% load pagination_tags %}
-{% autopaginate f 5 %}
+{% autopaginate movies 50 %}
 <div class='main-content' style='clear: both;'>
 	<div style='clear:both;'>
 		<table class="table table-bordered table-striped">
@@ -53,7 +50,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td class='td1'>
+					<td class='td1 item'>
 						<div class='movie-item'>
 							<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
 							<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
@@ -72,63 +69,29 @@
 						<div style='clear:both;'></div> 
 						 -->
 					</td>
-					<td class='td2'>
+					<td class='td2 .item'>
 						<div class='others'>
-						{% for i in f %}
+						{% for movie in movies %}
 							<div class='movie-item'>
-								<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
-								<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
-								<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
+								<div class='name'><a href="http://tv.go.vn/movies/details/{{ movie.movie_id }}/{{ movie.movie_name }}.htm">{{ movie.movie_name }}</a></div>
+								<img class='poster' src='http://photoservice.tv.go.vn/photo/{{ movie.image_url }}.135.192.cache' alt='Mirror' />
+								<div class='director'>
+									<div>Director: </div>
+									<ul>
+									{% for director in movie.directors.all  %}
+										<li><a href="{% url 'artist:movie' director.id %}">{{ director.artist_name }}</a></li>
+									{% endfor %}
+									</ul>
+								</div>
 								<div class='casts'>
 									<div>Casts:</div>
 									<ul>
-										<li><a href="#">Lily Collins</a></li>
-										<li><a href="#">Julia Roberts</a></li>
-										<li><a href="#">Armie Hammer</a></li>
+									{% for cast in movie.casts.all  %}
+										<li><a href="{% url 'artist:movie' cast.id %}">{{ cast.artist_name }}</a></li>
+									{% endfor %}
 									</ul>
 								</div>
-								<div class='release'><span>Release: </span><span>2012</span></div>
-							</div> 
-						{% endfor %}
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class='td1'>
-						<div class='movie-item'>
-							<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
-							<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
-							<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
-							<div class='casts'>
-								<div>Casts:</div>
-								<ul>
-									<li><a href="#">Lily Collins</a></li>
-									<li><a href="#">Julia Roberts</a></li>
-									<li><a href="#">Armie Hammer</a></li>
-								</ul>
-							</div>
-							<div class='release'><span>Release: </span><span>2012</span></div>
-						</div>
-						<!--
-						<div style='clear:both;'></div> 
-						 -->
-					</td>
-					<td class='td2'>
-						<div class='others'>
-						{% for i in f %}
-							<div class='movie-item'>
-								<div class='name'>Mirror Mirror - Gương Thần [2012]</div>
-								<img class='poster' src='{{ MEDIA_URL}}images/mirror-mirror.jpeg' alt='Mirror' />
-								<div class='director'><span>Director: </span><a href="#">Tarsem Singh</a></div>
-								<div class='casts'>
-									<div>Casts:</div>
-									<ul>
-										<li><a href="#">Lily Collins</a></li>
-										<li><a href="#">Julia Roberts</a></li>
-										<li><a href="#">Armie Hammer</a></li>
-									</ul>
-								</div>
-								<div class='release'><span>Release: </span><span>2012</span></div>
+								<div class='release'><span>Release: </span><span>{{ movie.release_date|date:"m/d/Y" }}</span></div>
 							</div> 
 						{% endfor %}
 						</div>

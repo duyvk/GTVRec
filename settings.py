@@ -23,14 +23,14 @@ SECRET_KEY   = 'YOUR_SECRET_KEY'
 # = Directory Declaractions =
 # ===========================
 
-CURRENT_DIR   = os.path.dirname(__file__)
+CURRENT_DIR             = os.path.dirname(__file__)
 GOTVRECOMMENDATION_DIR  = CURRENT_DIR
-TEMPLATE_DIRS = (os.path.join(CURRENT_DIR, 'templates'),)
-MEDIA_ROOT    = os.path.join(CURRENT_DIR, 'media')
-# STATIC_ROOT   = os.path.join(CURRENT_DIR, 'static')
-UTILS_ROOT    = os.path.join(CURRENT_DIR, 'utils')
-VENDOR_ROOT   = os.path.join(CURRENT_DIR, 'vendor')
-LOG_FILE      = os.path.join(CURRENT_DIR, 'logs/gotvrecommendation.log')
+TEMPLATE_DIRS           = (os.path.join(CURRENT_DIR, 'templates'),)
+MEDIA_ROOT              = os.path.join(CURRENT_DIR, 'media')
+#STATIC_ROOT            = os.path.join(CURRENT_DIR, 'static')
+UTILS_ROOT              = os.path.join(CURRENT_DIR, 'utils')
+VENDOR_ROOT             = os.path.join(CURRENT_DIR, 'vendor')
+LOG_FILE                = os.path.join(CURRENT_DIR, 'logs/gotvrecommendation.log')
 
 # ==============
 # = PYTHONPATH =
@@ -217,6 +217,7 @@ LOG_TO_STREAM = False
 # ===============
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.staticfiles',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -229,6 +230,7 @@ INSTALLED_APPS = (
     'apps.userinfo',
     'apps.recommendations',
     'apps.statistics',
+    'apps.movies',
     'south',
     'utils',
     'vendor',

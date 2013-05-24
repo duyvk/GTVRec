@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^music', include('apps.musics.urls', namespace='musics')),
     url(r'^clip', include('apps.clips.urls', namespace='clips')),
     url(r'^auth', include('apps.auth.urls', namespace='auth')),
+    url(r'^artist', include('apps.artists.urls', namespace='artist')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
 )
