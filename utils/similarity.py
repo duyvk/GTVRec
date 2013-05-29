@@ -5,7 +5,8 @@ Created on Mar 15, 2013
 
 @author: rega
 '''
-        
+import math
+
 def similar_list_calculating(l1, l2):
     """
     Tính similarity giữa 2 thành phần của 2 vector đặc trưng, công thức áp dụng 
@@ -30,7 +31,7 @@ def similar_list_calculating(l1, l2):
     else:
         return 0.0
 
-def similar_number_calculating(n1, n2):
+def similar_number_calculating(max_value, n1, n2):
     """
     Tính similarity giữa 2 thành phần của 2 vector đặc trưng, công thức áp dụng 
     trong hàm này là tính hệ số Jaccard, nếu 2 thành phần càng giống nhau thì hệ số 
@@ -43,8 +44,16 @@ def similar_number_calculating(n1, n2):
     @return: float, hệ số Jaccard
     """
     # applied the formula:
-    # score = (max(n1,n2) - diff(n1,n2))/max(n1,n2)
-    min_value = min(n1, n2)
-    max_value = max(n1, n2)
-    return 1.0*min_value/max_value
+    if max_value < 0: # regarless of maxscore
+        max_value = max(n1,n2)
+    score = (float)(max_value - abs(n1-n2))/max_value
+#    min_value = min(n1, n2)
+#    max_value = max(n1, n2)
+#    return 1.0*min_value/max_value
+    return score
     
+if __name__ =="__main__":
+    a = [1,2,3]
+    b = [2,3,4]
+    print similar_list_calculating(a,b)
+    print similar_number_calculating(-1, 4, 2)

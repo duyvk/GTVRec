@@ -29,3 +29,8 @@ def normalize_vietnamese(text):
                     break
         text = ' '.join(syllables)
     return text
+
+
+if __name__ == "__main__":
+    a = "fuỹ"
+    print normalize_vietnamese(a)

@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//Test/ppjoin/ppjoin.py=utf8
+encoding//utils/feedgotv.py=utf-8
+encoding//utils/similarity.py=utf-8
 encoding//utils/vietnamese_norm.py=utf8
