@@ -14,7 +14,6 @@ GOTV_JOBS=(
     ('singer', 'SINGER'),
 )
 
-
 class Genre(models.Model):
     """
     Movie: subcategoryID
@@ -30,7 +29,6 @@ class Genre(models.Model):
             return u'%d: %s' % (self.genre_id, self.genre_name)
         else :
             return self.genre_id
-
 
     class Meta:
         app_label = 'movies'

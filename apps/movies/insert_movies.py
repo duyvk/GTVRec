@@ -6,7 +6,12 @@ Created on Mar 22, 2013
 
 import pyodbc as msdb
 from datetime import datetime
+from django.db import models
 from apps.movies.models import Movie, Genre, Region, Artist,GOTV_JOBS
+from apps.core.models import MMovieVector, MMovieVectorTable
+import mongoengine as mongo
+import local_settings
+from utils import vietnamese_norm
 CLIP_CATE_CODE = 5
 MOVIE_CATE_COTE = 2
 MUSIC_MVCLIP_CATE_CODE = 4
@@ -206,6 +211,62 @@ def import_movie():
         
     conn_ms.close()
 
-if __name__ == '__main__':
-    import_movie()
+# transfering movies data from postgres to mongodb
+def P2M_transfering_all_movies():
+    mongo.connect(local_settings.MONGO_DB['name'], host=local_settings.MONGO_DB["host"], port=local_settings.MONGO_DB["port"])
+    list_of_movies = Movie.objects.all()
     
+    for p_movie in list_of_movies:
+        m_movie = P2M_movie_object(p_movie)
+        if m_movie:
+#            print m_movie.movie_id
+#            print m_movie.movie_name 
+#            print m_movie.movie_name_norm 
+#            print m_movie.movie_type 
+#            print m_movie.cate 
+#            print m_movie.subcates
+#            print m_movie.directors
+#            print m_movie.casts 
+#            print m_movie.location
+#            print m_movie.release_date
+#            print m_movie.imdb_score 
+#            print m_movie.view_count
+            MMovieVector.objects.insert(m_movie)
+    
+# transfering a movie data from postgres to mongodb
+def P2M_movie_object (p_movie):
+    if p_movie.movie_id and p_movie.source_type:
+        m_movie =  MMovieVector.objects.get_or_create(movie_id= p_movie.movie_id,source_type=p_movie.source_type)
+        m_movie.movie_name = p_movie.movie_name
+        m_movie.movie_name_norm = vietnamese_norm.normalize_vietnamese(p_movie.movie_name)
+        #m_movie.movie_type = p_movie.movie_type
+        m_movie.cate = p_movie.cate
+        m_movie.subcates = list (subcate.genre_id for subcate in p_movie.subcates.all())
+        m_movie.directors = list (director.id for director in p_movie.directors.all())
+        m_movie.casts = list (actor.id for actor in p_movie.casts.all())
+        m_movie.location = p_movie.location.region_id
+        m_movie.release_date = p_movie.release_date
+        m_movie.imdb_score = p_movie.IMDB_score
+        m_movie.view_count = p_movie.view_count
+        m_movie.is_HD = p_movie.is_HD
+        m_movie.is_free = p_movie.is_free
+        m_movie.is_single_movie = p_movie.is_single_movie
+        return m_movie
+    else :
+        return None
+
+def update_movie():
+    # connect tv.go.vn.MiningChange  in 117.103.196.39
+    # update postgre
+    # update mongo
+    # recalculate everything
+    pass
+
+
+if __name__ == '__main__':
+    #import_movie()
+    #P2M_transfering_all_movies()
+    list_of_mongo_movies = MMovieVector.objects.all()
+    for m in list_of_mongo_movies:
+        print m.to_movie_vector()
+    print mm
