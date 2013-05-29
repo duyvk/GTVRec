@@ -333,7 +333,19 @@ class MMovie_View_Count_Statistic(mongo.Document):
     source_type = mongo.IntField()
     cate = mongo.IntField()
     release_date= mongo.DateTimeField()
+    created_date = mongo.DateTimeField()
     collected_date = mongo.DateTimeField(default=datetime.datetime.utcnow())
+
+    meta = {
+        'collection': 'movie_vector_space',
+        'allow_inheritance': False,
+        'index_drop_dups': True,
+        'shard_key':('movie_id', 'source_type'),
+        'ordering': ['source_type', 'movie_id']
+    }
+
+    def __unicode__(self):
+        return "Vector movie %s <id=%s>" % (self.movie_name, self.movie_id)
 
 
 
