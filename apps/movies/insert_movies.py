@@ -5,6 +5,7 @@ Created on Mar 22, 2013
 '''
 
 import pyodbc as msdb
+from utils.connection import SQL_connection
 from datetime import datetime
 from django.db import models
 from apps.movies.models import Movie, Genre, Region, Artist,GOTV_JOBS
@@ -12,10 +13,13 @@ from apps.core.models import MMovieVector, MMovieVectorTable
 import mongoengine as mongo
 import local_settings
 from utils import vietnamese_norm
+
+# category code
 CLIP_CATE_CODE = 5
 MOVIE_CATE_COTE = 2
 MUSIC_MVCLIP_CATE_CODE = 4
 SOURCE_TYPE_CODE = 1
+
 
 def get_or_create_genre(genreId, genreName):
     genre = Genre.objects.filter(genre_id=int(genreId))
@@ -30,7 +34,6 @@ def get_or_create_artist(personName, hisJob):
         artist = Artist.objects.create(artist_name=personName,artist_job=hisJob)
         return artist
     return artist[0]
-
 
 def get_or_create_movie( movieID, sourcetype):
     movie = Movie.objects.filter(movie_id=int(movieID),source_type=sourcetype)
@@ -96,7 +99,6 @@ def insert_one_movie_row(movie_dict):
                 temp = get_or_create_genre(key,sub_cate_dict[key])
                 movie.subcates.add(temp)
 
-        
 #
 ##        if "ManufacturerName" in movie_dict:
 ##            movie.ManufacturerName = movie_dict["ManufacturerName"]
@@ -165,21 +167,19 @@ def insert_one_movie_row(movie_dict):
 def import_movie():
 
     #MAke the MSSQL connection
-    conn_ms = msdb.connect('DRIVER=FreeTDS;SERVER=117.103.196.39;PORT=1433;DATABASE=tv.go.vn;UID=tv.go.vn;PWD=goTV!@#;TDS_Version=8.0;')
+    conn_ms = SQL_connection()
     cursor_ms = conn_ms.cursor()
 
     # Lists the tables in demo
     myGetQuery_movie = "select  * from view_ListMovies "
 
-
-        # Execute the SQL query and get the response
+    # Execute the SQL query and get the response
     cursor_ms.execute(myGetQuery_movie)
     response = cursor_ms.fetchall()
 
     list_colums = []
     for row in cursor_ms.columns(table='view_ListMovies'):
         list_colums.append(str(row.column_name))
-    #print ','.join(list_colums)
 
     # Loop through the response and print table names
     for index, row in enumerate(response):
@@ -236,8 +236,8 @@ def P2M_transfering_all_movies():
 # transfering a movie data from postgres to mongodb
 def P2M_movie_object (p_movie):
     if p_movie.movie_id and p_movie.source_type:
-        m_movie =  MMovieVector.objects.get_or_create(movie_id= p_movie.movie_id,source_type=p_movie.source_type)
-        m_movie.movie_name = p_movie.movie_name
+        m_movie =  MMovieVector.objects.get_or_create(movie_id= p_movie.movie_id,source_type=p_movie.source_type, auto_save=False)[0]
+        m_movie.movie_name = (p_movie.movie_name)
         m_movie.movie_name_norm = vietnamese_norm.normalize_vietnamese(p_movie.movie_name)
         #m_movie.movie_type = p_movie.movie_type
         m_movie.cate = p_movie.cate
@@ -250,7 +250,7 @@ def P2M_movie_object (p_movie):
         m_movie.view_count = p_movie.view_count
         m_movie.is_HD = p_movie.is_HD
         m_movie.is_free = p_movie.is_free
-        m_movie.is_single_movie = p_movie.is_single_movie
+        m_movie.is_single_movie = p_movie.is_single_movie 
         return m_movie
     else :
         return None
@@ -262,11 +262,16 @@ def update_movie():
     # recalculate everything
     pass
 
-
 if __name__ == '__main__':
+    
+    #import movie from SQL server to postgres
     #import_movie()
+    
+    # import movie from postgres to mongodb(MMovieVector)
     #P2M_transfering_all_movies()
+    
+    
     list_of_mongo_movies = MMovieVector.objects.all()
     for m in list_of_mongo_movies:
         print m.to_movie_vector()
-    print mm
+    print len(list_of_mongo_movies)
