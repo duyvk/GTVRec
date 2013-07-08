@@ -97,7 +97,6 @@ class Region(models.Model):
         return self.region_name
 
 
-
     class Meta:
         app_label = 'movies'
 

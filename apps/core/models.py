@@ -10,7 +10,6 @@ from utils.similarity import similar_list_calculating, similar_number_calculatin
 from apps.movies.models import Movie
 import local_settings
 from utils import Timer
-from babel.localedata import list
 from django.utils.itercompat import product
 mongo.connect(local_settings.MONGO_DB['name'], host=local_settings.MONGO_DB["host"], port=local_settings.MONGO_DB["port"])
 
@@ -95,9 +94,9 @@ class MMovieVector(mongo.Document):
             return cls.objects.get(movie_id=movie_id, source_type=source_type).to_movie_vector()
         except MMovieVector.DoesNotExist:
             return None
-    
-    
-        
+
+
+
 
 
 # if __name__ == "__main__":
@@ -134,8 +133,8 @@ class MMovieVectorTable(mongo.Document):
             'movie_id': self.movie_id,
             'scores':   self.scores,
         }
-    
-    
+
+    '''
     @classmethod
     def calc_movie_score(cls, movie_id_1, movie_id_2, **boosts):
         movie_vector_1 = MMovieVector.get_vector(movie_id_1, 1)
@@ -183,16 +182,17 @@ class MMovieVectorTable(mongo.Document):
 #                print boosts[k]
 #                print "---"
                 result += boosts[k]*v
-                
+
             return result
 
         return 0.0
+    '''
     @classmethod
     def calc_2movie_score(cls, movie_1, movie_2, **boosts):
-    
+
         movie_vector_1 = movie_1#.to_movie_vector()
         movie_vector_2 = movie_2#.to_movie_vector()
-    
+
         if movie_vector_1 and movie_vector_2:
             features = {}
             for feature_name, feature_value_1 in movie_vector_1.iteritems():
@@ -225,8 +225,6 @@ class MMovieVectorTable(mongo.Document):
                     elif feature_name == 'view_count':
                         features[feature_name] = cls.movie_view_count_scoring(feature_value_1, feature_value_2)
 
-#            features_vector = []
-#            boost_vector = []
             result = 0.0
             for k, v in features.iteritems():
                 #boost_vector.append(boosts.get(k, 0.0))
@@ -236,9 +234,9 @@ class MMovieVectorTable(mongo.Document):
 #                print boosts[k]
 #                print "#######"
                 result += (boosts[k]*v)
-                
+
             return result
-        
+
     @classmethod
     def movie_name_scoring(cls, movie_name_1, movie_name_2):
         if movie_name_1 and movie_name_2:
@@ -285,7 +283,7 @@ class MMovieVectorTable(mongo.Document):
         if movie_view_count_1 and movie_view_count_2:
             return similar_number_calculating(-1, movie_view_count_1, movie_view_count_2)
         return 0.0
-    
+
     @classmethod
     def movie_release_date_scoring(cls, max_days, movie_release_date_1, movie_release_date_2):
         if movie_release_date_1 and movie_release_date_2:
@@ -294,7 +292,7 @@ class MMovieVectorTable(mongo.Document):
         else:
             return 0.0
         diff_days =  (float)((time_delta.days))
-        
+
         return float(max_days-diff_days)/max_days if max_days > diff_days else 0
 
     @classmethod
@@ -309,8 +307,8 @@ class MMovieVectorTable(mongo.Document):
         except ValidationError as e:
             print e
         posting_list.save()
-        
-        
+
+
         posting_list,_ = cls.objects.get_or_create(movie_id=movie_id_2)
         scores = posting_list.scores
         scores[str(movie_id_1)] = movie_score
@@ -319,7 +317,7 @@ class MMovieVectorTable(mongo.Document):
         except ValidationError as e:
             print e
         posting_list.save()
-        
+
 
     @classmethod
     def get_posting_list(cls, movie_id):
@@ -327,25 +325,6 @@ class MMovieVectorTable(mongo.Document):
             return cls.objects.get(movie_id=movie_id).scores
         except MMovieVectorTable.DoesNotExist:
             return None
-
-class MMovie_View_Count_Statistic(mongo.Document):
-    movie_id = mongo.IntField()
-    source_type = mongo.IntField()
-    cate = mongo.IntField()
-    release_date= mongo.DateTimeField()
-    created_date = mongo.DateTimeField()
-    collected_date = mongo.DateTimeField(default=datetime.datetime.utcnow())
-
-    meta = {
-        'collection': 'movie_vector_space',
-        'allow_inheritance': False,
-        'index_drop_dups': True,
-        'shard_key':('movie_id', 'source_type'),
-        'ordering': ['source_type', 'movie_id']
-    }
-
-    def __unicode__(self):
-        return "Vector movie %s <id=%s>" % (self.movie_name, self.movie_id)
 
 
 
@@ -370,4 +349,4 @@ if __name__ == "__main__":
     list_of_results = MMovieVectorTable.objects.all()
     for i in list_of_results:
         print i.movie_id,  len(i.scores)
-        
+
