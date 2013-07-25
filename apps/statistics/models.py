@@ -8,7 +8,7 @@ from django.utils.timezone import utc
 #3rd-party lib
 import mongoengine as mongo
 import pyodbc as msdb
-
+from utils.connection import bongngo_SQL_connection, SQL_connection
 #in app
 from apps.core.models import MMovieVector,MMovieVectorTable
 
@@ -133,11 +133,11 @@ class Movie_Statistic(mongo.Document):
 
 if __name__ == "__main__":
     
-    #Movie_Statistic.update_movies()
+    Movie_Statistic.update_movies()
     listm = Movie_Statistic.objects.all()
     
     #MAke the MSSQL connection
-    conn_ms = msdb.connect('DRIVER=FreeTDS;SERVER=117.103.196.39;PORT=1433;DATABASE=tv.go.vn;UID=tv.go.vn;PWD=goTV!@#;TDS_Version=8.0;')
+    conn_ms = bongngo_SQL_connection() #msdb.connect('DRIVER=FreeTDS;SERVER=117.103.196.38;PORT=1433;DATABASE=unofficial;UID=unofficial;PWD=unofficial;TDS_Version=8.0;')
     
     cursor_ms = conn_ms.cursor()
     trancate_movie = "delete from dbo.MiningHot";
@@ -148,11 +148,11 @@ if __name__ == "__main__":
         if m.trends_score()[0] >0:
             #print m.trends_score() , m.movie_id
             
-
-            myGetQuery_movie = "insert into dbo.MiningHot values (%d, %d,%d,%f);"\
-                            %(m.cate, m.source_type,m.movie_id, m.trends_score()[0])
+            myGetQuery_movie = "insert into unofficial.dbo.MiningHot values (%d, %d,%d,%f,%d);"\
+                            %(m.cate, m.source_type,m.movie_id, m.trends_score()[0],0)
             print myGetQuery_movie
             cursor_ms.execute(myGetQuery_movie)
+    cursor_ms.execute("EXEC dbo.uspMiningHotSort 2")
     conn_ms.close()
         
         
